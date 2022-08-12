@@ -1,14 +1,30 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import { useEffect, useState } from "react";
+import Seo from "../components/Seo";
 
-const Home: NextPage = () => {
+const API_KEY = "10923b261ba94d897ac6b81148314a3f";
+
+export default function Home() {
+  const [movies, setMovies] =
+    useState<{ id: string; original_title: string }[]>();
+  useEffect(() => {
+    (async () => {
+      const { results } = await (
+        await fetch(
+          `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
+        )
+      ).json();
+      setMovies(results);
+    })();
+  }, []);
   return (
     <div>
-      <h1>index 파일은 프로젝트의 홈페이지 / </h1>
+      <Seo title="Home" />
+      {!movies && <h4>Loading...</h4>}
+      {movies?.map((movie) => (
+        <div key={movie.id}>
+          <h4>{movie.original_title}</h4>
+        </div>
+      ))}
     </div>
   );
-};
-
-export default Home;
+}
