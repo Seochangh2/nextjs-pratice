@@ -10,15 +10,7 @@ export default function Home({ results }: Props) {
   const router = useRouter();
   const onClick = (id: string, title: string) => {
     // router.push(`/movies/${id}`);
-    router.push(
-      {
-        pathname: `/movies/${id}`,
-        query: {
-          title: title,
-        },
-      },
-      `/movies/${id}`
-    );
+    router.push(`/movies/${title}/${id}`);
   };
   return (
     <div className="container">
@@ -31,7 +23,10 @@ export default function Home({ results }: Props) {
         >
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
           <h4>
-            <Link href={`/movies/${movie.id}`} key={movie.id}>
+            <Link
+              href={`/movies/${movie.original_title}/${movie.id}`}
+              key={movie.id}
+            >
               <a>{movie.original_title}</a>
             </Link>
           </h4>
